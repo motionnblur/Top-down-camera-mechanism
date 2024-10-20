@@ -1,7 +1,10 @@
 using UnityEngine;
 
+enum SelectMode { HOVER, SELECT }
 public class SelectManager : MonoBehaviour
 {
+    SelectMode currentMode = SelectMode.HOVER;
+
     public static SelectManager Instance;
 
     public GameObject selectionCube = null;
@@ -32,7 +35,56 @@ public class SelectManager : MonoBehaviour
         EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
     }
 
+
     void OnRaycastHit(Collider collider)
+    {
+        switch (currentMode)
+        {
+            case SelectMode.HOVER:
+                Hover(collider);
+                break;
+            case SelectMode.SELECT:
+                Select(collider);
+                break;
+        }
+    }
+
+    void OnLeftClick(bool stage)
+    {
+        if (stage)
+        {
+            if (currentSelectionCube.activeSelf)
+                currentSelectionCube.SetActive(false);
+
+            currentMode = SelectMode.SELECT;
+        }
+
+    }
+
+    void Hover(Collider collider)
+    {
+        if (collider.CompareTag("Player"))
+        {
+            if (currentSelectionCube == null)
+            {
+                currentSelectionCube = Instantiate(selectionCube, collider.transform.position, Quaternion.identity);
+            }
+            else
+            {
+                currentSelectionCube.transform.position = collider.transform.position;
+                if (!currentSelectionCube.activeSelf)
+                    currentSelectionCube.SetActive(true);
+            }
+        }
+        else
+        {
+            if (currentSelectionCube != null)
+            {
+                currentSelectionCube.SetActive(false);
+            }
+        }
+    }
+    void Select(Collider collider)
     {
         if (rayLocked) return;
 
@@ -49,14 +101,7 @@ public class SelectManager : MonoBehaviour
                 currentSelectedPlayer = collider.gameObject;
             }
 
-            if (currentSelectionCube == null)
-            {
-                currentSelectionCube = Instantiate(selectionCube, collider.transform.position, Quaternion.identity);
-            }
-            else
-            {
-                currentSelectionCube.transform.position = collider.transform.position;
-            }
+
 
             collider.GetComponent<PlayerGui>().OpenCanvas();
         }
@@ -69,11 +114,5 @@ public class SelectManager : MonoBehaviour
             }
         }
         rayLocked = true;
-    }
-
-    void OnLeftClick(bool stage)
-    {
-        if (!stage)
-            rayLocked = false;
     }
 }
