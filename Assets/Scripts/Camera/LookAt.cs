@@ -60,16 +60,18 @@ public class LookAt : MonoBehaviour
         Vector3 cameraPosition = player.position + new Vector3(x, y, z);
         evaluateTime += Time.deltaTime;
         float t = animCurve.Evaluate(evaluateTime);
-        transform.position = Vector3.Lerp(transform.position, cameraPosition, t * Time.deltaTime * 2f);
+        transform.position = Vector3.Lerp(transform.position, cameraPosition, t * Time.deltaTime * 3.5f);
 
-        transform.LookAt(player);
+        Vector3 lookDirection = player.position - transform.position;
 
-        if (Vector3.Distance(transform.position, cameraPosition) < 0.1f)
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), 3 * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, cameraPosition) < 0.001f)
         {
             evaluateTime = 0f;
+            transform.LookAt(player);
             currentMode = CameraMode.IN_PLAYER_ORBIT;
         }
-
     }
     void InPlayerOrbit()
     {
