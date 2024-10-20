@@ -270,7 +270,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1213043059708620723}
-  rotationSpeed: 5
+  orbitSpeed: 0.5
+  orbitRadius: 5.5
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9797e0c306c9896419668de2278fac4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentSelectedPlayer: {fileID: 0}
 --- !u!1 &1879828430
 GameObject:
   m_ObjectHideFlags: 0

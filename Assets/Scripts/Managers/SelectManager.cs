@@ -4,7 +4,7 @@ public class SelectManager : MonoBehaviour
 {
     public static SelectManager Instance;
 
-    private GameObject currentSelectedPlayer = null;
+    public GameObject currentSelectedPlayer = null;
 
     void Awake()
     {
