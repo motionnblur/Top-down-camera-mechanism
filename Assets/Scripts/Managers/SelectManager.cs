@@ -8,6 +8,7 @@ public class SelectManager : MonoBehaviour
     public GameObject currentSelectedPlayer = null;
 
     private GameObject currentSelectionCube = null;
+    private bool rayLocked = false;
 
     void Awake()
     {
@@ -23,14 +24,18 @@ public class SelectManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.AddEvent<Collider>("OnRaycastHit", OnRaycastHit);
+        EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
     }
     void OnDisable()
     {
         EventManager.RemoveEvent<Collider>("OnRaycastHit", OnRaycastHit);
+        EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
     }
 
     void OnRaycastHit(Collider collider)
     {
+        if (rayLocked) return;
+
         if (collider.CompareTag("Player"))
         {
             if (currentSelectedPlayer != null)
@@ -63,5 +68,12 @@ public class SelectManager : MonoBehaviour
                 currentSelectedPlayer = null;
             }
         }
+        rayLocked = true;
+    }
+
+    void OnLeftClick(bool stage)
+    {
+        if (!stage)
+            rayLocked = false;
     }
 }
