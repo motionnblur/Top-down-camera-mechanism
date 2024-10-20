@@ -6,6 +6,9 @@ public class PlayerGui : MonoBehaviour
     public void OpenCanvas()
     {
         if (!playerCanvas.activeSelf)
+        {
             playerCanvas.SetActive(true);
+            GuiManager.Instance.OpenActivePlayerCanvas(playerCanvas);
+        }
     }
 }
