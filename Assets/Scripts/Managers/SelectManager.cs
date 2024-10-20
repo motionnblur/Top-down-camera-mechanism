@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 enum SelectMode { HOVER, SELECT }
@@ -11,6 +12,7 @@ public class SelectManager : MonoBehaviour
     public GameObject currentSelectedPlayer = null;
 
     private GameObject currentSelectionCube = null;
+    private GameObject currentHoveredPlayer = null;
     private bool rayLocked = false;
 
     void Awake()
@@ -24,6 +26,7 @@ public class SelectManager : MonoBehaviour
             Instance = this;
         }
     }
+
     void OnEnable()
     {
         EventManager.AddEvent<Collider>("OnRaycastHit", OnRaycastHit);
@@ -35,6 +38,11 @@ public class SelectManager : MonoBehaviour
         EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
     }
 
+    void Start()
+    {
+        currentSelectionCube = Instantiate(selectionCube);
+        currentSelectionCube.SetActive(false);
+    }
 
     void OnRaycastHit(Collider collider)
     {
@@ -51,12 +59,26 @@ public class SelectManager : MonoBehaviour
 
     void OnLeftClick(bool stage)
     {
+        if (currentHoveredPlayer == null) return;
         if (stage)
         {
             if (currentSelectionCube.activeSelf)
                 currentSelectionCube.SetActive(false);
 
-            currentMode = SelectMode.SELECT;
+            if (currentSelectedPlayer != null)
+            {
+                if (currentSelectedPlayer != currentHoveredPlayer)
+                {
+                    currentSelectedPlayer.GetComponent<PlayerGui>().CloseCanvas();
+                    currentSelectedPlayer = currentHoveredPlayer;
+                    currentMode = SelectMode.SELECT;
+                }
+            }
+            else
+            {
+                currentSelectedPlayer = currentHoveredPlayer;
+                currentMode = SelectMode.SELECT;
+            }
         }
 
     }
@@ -65,27 +87,31 @@ public class SelectManager : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            if (currentSelectionCube == null)
+            currentHoveredPlayer = collider.gameObject;
+            currentSelectionCube.transform.position = currentHoveredPlayer.transform.position;
+            if (!currentSelectionCube.activeSelf)
             {
-                currentSelectionCube = Instantiate(selectionCube, collider.transform.position, Quaternion.identity);
-            }
-            else
-            {
-                currentSelectionCube.transform.position = collider.transform.position;
-                if (!currentSelectionCube.activeSelf)
+                if (currentSelectedPlayer != collider.gameObject)
                     currentSelectionCube.SetActive(true);
             }
         }
         else
         {
-            if (currentSelectionCube != null)
-            {
-                currentSelectionCube.SetActive(false);
-            }
+            currentHoveredPlayer = null;
+            if (currentSelectionCube != null) currentSelectionCube.SetActive(false);
         }
     }
     void Select(Collider collider)
     {
+        if (currentHoveredPlayer == null) return;
+
+        if (currentHoveredPlayer != collider.gameObject)
+        {
+            rayLocked = false;
+            currentMode = SelectMode.HOVER;
+            return;
+        }
+
         if (rayLocked) return;
 
         if (collider.CompareTag("Player"))
@@ -100,8 +126,6 @@ public class SelectManager : MonoBehaviour
             {
                 currentSelectedPlayer = collider.gameObject;
             }
-
-
 
             collider.GetComponent<PlayerGui>().OpenCanvas();
         }
