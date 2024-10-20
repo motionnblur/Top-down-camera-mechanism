@@ -12,6 +12,8 @@ public class LookAt : MonoBehaviour
     public float orbitRadius = 5.0f; // Distance between camera and player
     private float horizontalAngle = -1.5f; // Initial horizontal angle of camera orbit
     private float verticalAngle = 0.6f; // Initial vertical angle of camera orbit
+    [SerializeField] AnimationCurve animCurve;
+    private float evaluateTime = 0f;
 
     void Awake()
     {
@@ -56,12 +58,18 @@ public class LookAt : MonoBehaviour
         float z = orbitRadius * Mathf.Sin(horizontalAngle) * Mathf.Cos(verticalAngle);
 
         Vector3 cameraPosition = player.position + new Vector3(x, y, z);
-        transform.position = Vector3.Lerp(transform.position, cameraPosition, Time.deltaTime * 2f);
+        evaluateTime += Time.deltaTime;
+        float t = animCurve.Evaluate(evaluateTime);
+        transform.position = Vector3.Lerp(transform.position, cameraPosition, t * Time.deltaTime * 2f);
 
         transform.LookAt(player);
 
         if (Vector3.Distance(transform.position, cameraPosition) < 0.1f)
+        {
+            evaluateTime = 0f;
             currentMode = CameraMode.IN_PLAYER_ORBIT;
+        }
+
     }
     void InPlayerOrbit()
     {
