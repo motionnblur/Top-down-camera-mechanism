@@ -12,5 +12,14 @@ public class InputManager : MonoBehaviour
         {
             EventManager.TriggerEvent("OnLeftClick", false);
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            EventManager.TriggerEvent("OnRightClick", true);
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            EventManager.TriggerEvent("OnRightClick", false);
+        }
     }
 }
