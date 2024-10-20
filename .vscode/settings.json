@@ -1,0 +1,28 @@
+{
+    "dotnet.preferCSharpExtension": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.meta": true,
+        "**/*.inputactions": true,
+        "**/*.asset": true,
+        "**/Settings": true,
+        "**/*.unity": true,
+        "**/*.wlt": true,
+        "**/Library": true,
+        "**/Scenes": true,
+        "**/Logs": true,
+        "**/UserSettings": true,
+        "**/ProjectSettings": true,
+        "**/Packages": true,
+        "**/Temp": true,
+        "**/obj": true,
+        "**/*.vsconfig": true,
+        "**/*.vs": true
+    },
+    "dotnet.defaultSolution": "Top down prototype.sln"
+}

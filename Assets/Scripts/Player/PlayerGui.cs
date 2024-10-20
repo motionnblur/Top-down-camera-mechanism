@@ -1,0 +1,11 @@
+using UnityEngine;
+
+public class PlayerGui : MonoBehaviour
+{
+    [SerializeField] GameObject playerCanvas;
+    public void OpenCanvas()
+    {
+        if (!playerCanvas.activeSelf)
+            playerCanvas.SetActive(true);
+    }
+}
