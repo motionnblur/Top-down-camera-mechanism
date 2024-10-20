@@ -11,4 +11,13 @@ public class PlayerGui : MonoBehaviour
             GuiManager.Instance.OpenActivePlayerCanvas(playerCanvas);
         }
     }
+
+    public void CloseCanvas()
+    {
+        if (playerCanvas.activeSelf)
+        {
+            playerCanvas.SetActive(false);
+            GuiManager.Instance.CloseActivePlayerCanvas();
+        }
+    }
 }

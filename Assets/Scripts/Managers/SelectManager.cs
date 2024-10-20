@@ -30,7 +30,17 @@ public class SelectManager : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            currentSelectedPlayer = collider.gameObject;
+            if (currentSelectedPlayer != null)
+            {
+                currentSelectedPlayer.GetComponent<PlayerGui>().CloseCanvas();
+                currentSelectedPlayer = collider.gameObject;
+                LookAt.Instance.ChangePlayer(collider.transform);
+            }
+            else
+            {
+                currentSelectedPlayer = collider.gameObject;
+            }
+
             collider.GetComponent<PlayerGui>().OpenCanvas();
         }
         else
