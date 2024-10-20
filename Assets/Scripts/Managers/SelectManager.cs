@@ -4,7 +4,10 @@ public class SelectManager : MonoBehaviour
 {
     public static SelectManager Instance;
 
+    public GameObject selectionCube = null;
     public GameObject currentSelectedPlayer = null;
+
+    private GameObject currentSelectionCube = null;
 
     void Awake()
     {
@@ -39,6 +42,15 @@ public class SelectManager : MonoBehaviour
             else
             {
                 currentSelectedPlayer = collider.gameObject;
+            }
+
+            if (currentSelectionCube == null)
+            {
+                currentSelectionCube = Instantiate(selectionCube, collider.transform.position, Quaternion.identity);
+            }
+            else
+            {
+                currentSelectionCube.transform.position = collider.transform.position;
             }
 
             collider.GetComponent<PlayerGui>().OpenCanvas();

@@ -1073,6 +1073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9797e0c306c9896419668de2278fac4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionCube: {fileID: 7392609815036092256, guid: 2a6cbcf94c47c914bb711af87451f41e, type: 3}
   currentSelectedPlayer: {fileID: 0}
 --- !u!1 &1879828430
 GameObject:
