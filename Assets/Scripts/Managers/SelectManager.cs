@@ -29,19 +29,19 @@ public class SelectManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.AddEvent<Collider>("OnRaycastHit", OnRaycastHit);
-        EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
+        //EventManager.AddEvent<Collider>("OnRaycastHit", OnRaycastHit);
+        //EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
     }
     void OnDisable()
     {
-        EventManager.RemoveEvent<Collider>("OnRaycastHit", OnRaycastHit);
-        EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
+        //EventManager.RemoveEvent<Collider>("OnRaycastHit", OnRaycastHit);
+        //EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
     }
 
     void Start()
     {
-        currentSelectionCube = Instantiate(selectionCube);
-        currentSelectionCube.SetActive(false);
+        //currentSelectionCube = Instantiate(selectionCube);
+        //currentSelectionCube.SetActive(false);
     }
 
     void OnRaycastHit(Collider collider)
