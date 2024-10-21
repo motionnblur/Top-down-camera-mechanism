@@ -2,10 +2,23 @@ using UnityEngine;
 
 public class HighlightManager : MonoBehaviour
 {
+    public static HighlightManager Instance;
+
     public GameObject selectionCube = null;
+    public GameObject currentHighlightedPlayer = null;
+    private bool highLightStage = true;
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         selectionCube = Instantiate(selectionCube);
         selectionCube.SetActive(false);
     }
@@ -13,37 +26,38 @@ public class HighlightManager : MonoBehaviour
     {
         EventManager.AddEvent<Collider>("OnRaycastHit", OnRaycastHit);
         EventManager.AddEvent("OnRaycastHitNull", OnRaycastHitNull);
-        EventManager.AddEvent<bool>("OnLeftClick", OnLeftClick);
+        EventManager.AddEvent<bool>("OnHighlightStage", OnHighlightStage);
     }
     void OnDisable()
     {
         EventManager.RemoveEvent<Collider>("OnRaycastHit", OnRaycastHit);
         EventManager.RemoveEvent("OnRaycastHitNull", OnRaycastHitNull);
-        EventManager.RemoveEvent<bool>("OnLeftClick", OnLeftClick);
+        EventManager.RemoveEvent<bool>("OnHighlightStage", OnHighlightStage);
     }
 
     void OnRaycastHit(Collider collider)
     {
-        if (collider == null) return;
-
         if (collider.CompareTag("Player"))
         {
-            ShowCube(collider.transform);
+            if (collider.gameObject != SelectManager.Instance.currentSelectedPlayer)
+            {
+                currentHighlightedPlayer = collider.gameObject;
+                ShowCube(collider.transform);
+            }
         }
         else
         {
+            currentHighlightedPlayer = null;
             HideCube();
         }
     }
 
     void OnRaycastHitNull()
     {
+        if (currentHighlightedPlayer != null)
+            currentHighlightedPlayer = null;
         if (selectionCube != null && selectionCube.activeSelf)
             selectionCube.SetActive(false);
-    }
-    void OnLeftClick(bool stage)
-    {
-
     }
 
     void ShowCube(Transform tf)
@@ -55,5 +69,11 @@ public class HighlightManager : MonoBehaviour
     {
         if (selectionCube != null && selectionCube.activeSelf)
             selectionCube.SetActive(false);
+    }
+
+    void OnHighlightStage(bool stage)
+    {
+        highLightStage = stage;
+        if (!highLightStage) HideCube();
     }
 }

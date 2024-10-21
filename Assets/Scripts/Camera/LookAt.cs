@@ -7,7 +7,7 @@ public class LookAt : MonoBehaviour
 
     public static LookAt Instance { get; private set; }
     CameraMode currentMode = CameraMode.IDLE;
-    public Transform player; // Assign the player GameObject in the Inspector
+    public Transform player = null; // Assign the player GameObject in the Inspector
     public float orbitSpeed = 5.0f; // Speed of camera orbit
     public float orbitRadius = 5.0f; // Distance between camera and player
     private float horizontalAngle = -1.5f; // Initial horizontal angle of camera orbit
