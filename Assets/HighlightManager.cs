@@ -28,13 +28,11 @@ public class HighlightManager : MonoBehaviour
 
         if (collider.CompareTag("Player"))
         {
-            selectionCube.transform.position = collider.transform.position;
-            selectionCube.SetActive(true);
+            ShowCube(collider.transform);
         }
         else
         {
-            if (selectionCube != null && selectionCube.activeSelf)
-                selectionCube.SetActive(false);
+            HideCube();
         }
     }
 
@@ -46,5 +44,16 @@ public class HighlightManager : MonoBehaviour
     void OnLeftClick(bool stage)
     {
 
+    }
+
+    void ShowCube(Transform tf)
+    {
+        selectionCube.transform.position = tf.position;
+        selectionCube.SetActive(true);
+    }
+    void HideCube()
+    {
+        if (selectionCube != null && selectionCube.activeSelf)
+            selectionCube.SetActive(false);
     }
 }
