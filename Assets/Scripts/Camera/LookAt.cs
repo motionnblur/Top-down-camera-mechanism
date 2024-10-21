@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 enum CameraMode { IDLE, MOVING_TO_PLAYER, IN_PLAYER_ORBIT }
