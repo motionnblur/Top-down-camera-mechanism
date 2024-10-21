@@ -13,5 +13,9 @@ public class RaycastManager : MonoBehaviour
                 EventManager.TriggerEvent("OnRaycastHit", hit.collider);
             }
         }
+        else
+        {
+            EventManager.TriggerEvent("OnRaycastHitNull");
+        }
     }
 }
